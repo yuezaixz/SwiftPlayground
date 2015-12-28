@@ -191,6 +191,7 @@ let http404Error = (404,"Not Found")
 let (errorCode,errorMsg) = http404Error//可以类型Python这样操作
 print(http404Error.0,http404Error.1, errorCode, errorMsg, separator: ",", terminator: "[End]")
 
+//几种构造方式
 //数组，默认类型，常量数组内容不能变化
 let aArray = [1,2,3,4]
 //指定类型的数组
@@ -198,10 +199,13 @@ let bArray : [Int] = [5,6,7,8]
 
 var cArray = [Int]()
 
+//添加
 cArray.append(9)
 
+//添加数组
 cArray.appendContentsOf([10,11,12])
 
+//插入
 cArray.insert(13, atIndex: 2)
 
 
