@@ -148,6 +148,38 @@ assumedString = nil
 //print(assumedString)//报错，可以赋值为Nil,但是不能使用
 //注意:“如果一个变量之后可能变成nil的话请不要使用隐式解析可选类型。如果你需要在变量的生命周期中判断是否是nil的话，请使用普通可选类型。”
 
+//空合运算符，如果assumedString不为空，就对assumedString进行拆包并返回，如果assumedString为空则返回??后的变量
+var otherAssumedString = assumedString ?? "aa"// 其实就是三目运算符的简化 assumedString != nil ? assumedString! : "aa"
+
+//区间运算符
+var itemStr:String = ""
+for item in (1...10){//包含1和10
+    itemStr += String(item)
+}
+print(itemStr)
+
+//半开区间运算符
+itemStr = ""
+for item in (1..<10){//包含1不包含10
+    itemStr += String(item)
+}
+print(itemStr)
+
+//半开区间运算符就不行半开前半部分
+//itemStr = ""
+//for item in (1<..10){//包含1不包含10
+//    itemStr += String(item)
+//}
+//print(itemStr)
+
+//String是值类型，赋值其实就是copy，赋值后改变原始值，不会影响新的String变量，如下例子
+var itemStrCopy = itemStr
+print(itemStr,",","",itemStrCopy)
+itemStr += "hahah"
+print(itemStr,",","",itemStrCopy)
+
+
+
 //元组，尽量只用于临时的数据结构，对于复杂或不是临时使用的最好不要用元组
 let aTuple = (1,"Hello")
 print(aTuple.0,aTuple.1)
