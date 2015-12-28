@@ -257,6 +257,9 @@ if testIndexStr.hasSuffix("str"){
     print("testIndexStr has a suffix(str)")
 }
 
+//可以直接用contrains来判断字符串是否包含某字符串
+print(testIndexStr.containsString("test"))
+
 //字典
 var paodong = ["CEO":"axuan","Programer":"David","PO":"ken","Pet":"ZeroSon"]
 //key和value都是数字的字典
