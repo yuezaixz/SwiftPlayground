@@ -178,8 +178,6 @@ print(itemStr,",","",itemStrCopy)
 itemStr += "hahah"
 print(itemStr,",","",itemStrCopy)
 
-
-
 //元组，尽量只用于临时的数据结构，对于复杂或不是临时使用的最好不要用元组
 let aTuple = (1,"Hello")
 print(aTuple.0,aTuple.1)
@@ -208,6 +206,56 @@ cArray.insert(13, atIndex: 2)
 
 
 print(aArray,bArray,cArray,cArray.reverse()[0],cArray.count)
+
+//测试下几个闭包(filter,map,reduce)
+var oddArray = aArray.filter{$0%2 == 1 }
+var tenMultipleArray = aArray.map{$0*10}
+var sumForaArray = aArray.reduce(0, combine: {$0+$1})
+print("[1,2,3,4]'s odd is ",oddArray)
+print("[1,2,3,4]*10=",tenMultipleArray)
+print("1+2+3+4=",sumForaArray)
+
+//String可以遍历成Character
+"Hello world!".characters.forEach {
+    print($0)
+}
+
+//打印Unicode
+print("\u{2665}")
+
+//计算字符串长度
+let unusualMenagerie = "Koala 🐨, Snail 🐌, Penguin 🐧, Dromedary 🐪"
+print(unusualMenagerie.characters.count)
+
+//字符串的 startIndex ,endIndex为它的索引，表示他的第一个Character和最后一个Character的索引
+//索引是链表结构，通过successor(下一个)，predecessor（上一个），advancedBy（往后几个）来在链表中换了的玩耍
+print(unusualMenagerie.startIndex,":",unusualMenagerie[unusualMenagerie.startIndex])
+print(unusualMenagerie.startIndex.successor(),":",unusualMenagerie[unusualMenagerie.startIndex.successor()])
+print(unusualMenagerie.endIndex.predecessor(),":",unusualMenagerie[unusualMenagerie.endIndex.predecessor()])
+print(unusualMenagerie.startIndex.advancedBy(10),":",unusualMenagerie[unusualMenagerie.startIndex.advancedBy(10)])
+
+//indices为字符串 的所有index的集合
+for index in unusualMenagerie.characters.indices {
+    print(unusualMenagerie[index])
+}
+
+//用index来插入操作，可以插入一个字符，也可以插入一堆字符。remove操作类似
+var testIndexStr = "this is test index str"
+
+testIndexStr.insertContentsOf(" an".characters, at: testIndexStr.startIndex.advancedBy(7))
+
+//字符串相等，以什么开头，以什么结尾
+if testIndexStr == "this is an test index str"{
+    print("testIndexStr equal \(testIndexStr)")
+}
+
+if testIndexStr.hasPrefix("this"){
+    print("testIndexStr has a prefix(this)")
+}
+
+if testIndexStr.hasSuffix("str"){
+    print("testIndexStr has a suffix(str)")
+}
 
 //字典
 var paodong = ["CEO":"axuan","Programer":"David","PO":"ken","Pet":"ZeroSon"]
