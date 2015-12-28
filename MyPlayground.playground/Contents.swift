@@ -107,9 +107,46 @@ var anotherNumber = Int("12a")//转换失败，即为nil
 var surveyAnswer :String?
 
 var surveyAnswer2 :String
-//下面2行编译错误，以为非可选变量没有赋值是不能使用的
+//下面3行编译错误，以为非可选变量没有赋值是不能使用的
 //print(surveyAnswer2)
 //var surveyAnswer3 = surveyAnswer2
+//if surveyAnswer2 != "" {
+//    print("surveyAnswer2不为空")
+//}
+
+//可以这样判断可选变量是否为nil
+if surveyAnswer != nil {
+    print("surveyAnswer不为空")
+}
+
+//可选绑定
+if var tempSurveyAnswer = surveyAnswer {
+    print("该if意思为，可选绑定，如果可选变量不为空，就把他赋值给一个临时的变量（或临时常量）")
+}
+
+if var isaNumber = Int(aString) {
+    //转换成功后的isaNumber不需要用！解析了。
+    print("可以用可选绑定来判断一个字符串是否为数字（\(isaNumber)），是的话就把他赋值给一个临时变量。")
+} else {
+    //这里不能用isaNumber，因为他只有在if的逻辑块中能使用
+//    print("转换失败，（\(isaNumber)）不是数字")
+    print("转换失败，（\(aString)）不是数字")
+}
+
+//多个可选绑定
+
+if var tempSurveyAnswer = surveyAnswer,
+    var isaNumber = Int(aString){
+    print("该if意思为，可选绑定，如果可选变量不为空，就把他赋值给一个临时的变量（或临时常量）")
+}
+
+//隐式解析可选类型，直接使用不用解析。
+//隐私解析：第一次赋值之后就可以确定之后一直有值的时候
+var assumedString:String! = "aaa"
+print(assumedString)
+assumedString = nil
+//print(assumedString)//报错，可以赋值为Nil,但是不能使用
+//注意:“如果一个变量之后可能变成nil的话请不要使用隐式解析可选类型。如果你需要在变量的生命周期中判断是否是nil的话，请使用普通可选类型。”
 
 //元组，尽量只用于临时的数据结构，对于复杂或不是临时使用的最好不要用元组
 let aTuple = (1,"Hello")
