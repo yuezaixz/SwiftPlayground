@@ -199,6 +199,16 @@ let bArray : [Int] = [5,6,7,8]
 
 var cArray = [Int]()
 
+//数组的相加
+var dArray = aArray + bArray
+print(dArray)
+//特殊的方式去索引，可惜没Python的数组那么强大
+print(dArray[3...5])
+print(dArray[3..<5])
+
+//构造重复的数组
+var eArray = [Int](count: 5, repeatedValue: 3)
+
 //添加
 cArray.append(9)
 
@@ -209,7 +219,9 @@ cArray.appendContentsOf([10,11,12])
 cArray.insert(13, atIndex: 2)
 
 
-print(aArray,bArray,cArray,cArray.reverse()[0],cArray.count)
+//reverse 反向
+//removeAtIndex移除指定索引，并返回值
+print(aArray,bArray,cArray,cArray.reverse()[0],cArray.count,eArray.removeAtIndex(1))
 
 //测试下几个闭包(filter,map,reduce)
 var oddArray = aArray.filter{$0%2 == 1 }
@@ -219,10 +231,62 @@ print("[1,2,3,4]'s odd is ",oddArray)
 print("[1,2,3,4]*10=",tenMultipleArray)
 print("1+2+3+4=",sumForaArray)
 
+//Set
+var letters = Set<String>()
+var favoriteGenres:Set = ["Rock","Classical","Hip hop"]
+favoriteGenres.insert("Jazz")
+favoriteGenres.insert("Rock")//Set是hash唯一的
+
+//用可选绑定来判定是否移除了元素
+if let removedGenre = favoriteGenres.remove("Rock") {
+    print("\(removedGenre)? I'm over it ")
+} else {
+    print("i never much cared for that.")
+}
+
+//set 用contains来判断是否含有
+print(favoriteGenres.contains("Funk"))
+
+//set 也可以用循环
+for genre in favoriteGenres {
+    print(genre)
+}
+
+//sort后返回有序数列
+print(favoriteGenres.sort())
+
+//接下来，见证Set的魔法集合操作
+var aSet = Set<Int>([1,3,5,6,7,8,9])
+var bSet = Set<Int>([2,4,5,6,8,9,10])
+print(aSet.intersect(bSet))//交集:intersect
+print(aSet.exclusiveOr(bSet))//并集-交集:intersect
+print(aSet.union(bSet))//并集:union
+print(aSet.subtract(bSet))//aSet去除掉bSet中的元素后的集合:intersect
+
+var cSet = Set<Int>([1,3,5,6,7,8,9])
+print(aSet == cSet)//set可以直接用==来判断相等
+
+var dSet = Set<Int>([1,3,5,6])
+print(dSet.isSubsetOf(aSet))//判断d被a包含
+print(aSet.isSupersetOf(dSet))//判断d被a包含
+
+print(cSet.isStrictSubsetOf(aSet))//严格的判断包含，必须包含不能相等
+//isStrictSupersetOf 类似
+
+//是否包含不同值，没有相同值返回true
+print(dSet.isDisjointWith(aSet))//false
+var eSet = Set<Int>([11,22,33])
+print(bSet.isDisjointWith(eSet))//true
+
 //String可以遍历成Character
 "Hello world!".characters.forEach {
     print($0)
 }
+
+//hash值
+var str1 = "Hello world!"
+var str2 = "Hello world!"
+print(str1.hashValue == str2.hashValue)
 
 //打印Unicode
 print("\u{2665}")
@@ -264,11 +328,34 @@ if testIndexStr.hasSuffix("str"){
 //可以直接用contrains来判断字符串是否包含某字符串
 print(testIndexStr.containsString("test"))
 
+
 //字典
+//几种初始化方式
+var namesOfIntegers = [Int:String]()
 var paodong = ["CEO":"axuan","Programer":"David","PO":"ken","Pet":"ZeroSon"]
 //key和value都是数字的字典
-var numberDict = [0:1,1:2,2:4,3:8,4:16]
+var numberDict:[Int:Int] = [0:1,1:2,2:4,3:8,4:16]
 print(paodong["CEO"]!,numberDict[1]!)
+
+namesOfIntegers[16] = "sixteen"
+namesOfIntegers[18] = "eighten"
+print(namesOfIntegers[16])//字典中的value为optional，因为可能是空的
+//用updateValue和直接用下标更新的差异在于，update会返回旧值
+print(namesOfIntegers.updateValue("eighteen", forKey: 18))
+namesOfIntegers.removeAll()//清空1
+namesOfIntegers = [:]//清空2
+
+//遍历字典
+for (job,name) in paodong {
+    //这里的name不是可选类型了
+    print("job:\(job),name\(name)")
+}
+
+for index in numberDict.keys {
+    print(index)
+}
+//将values转成数组
+let numberValues = [Int](numberDict.values)
 
 //遍历
 for index in 0 ... 4 {
