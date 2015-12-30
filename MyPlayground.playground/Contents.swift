@@ -518,11 +518,22 @@ callFunction { (person) -> Bool in
     print("My name is \(personName),hello world!")
     return true
 }
-//
-//func chooseStepFunction(backwards:Bool) -> (Int) -> Int {
-//    func stepForward : {(input) -> Int in return ++input}
-//    func stepBackward : {(input) -> Int in return --input}
-//    return backwards?stepForward:stepBackward
-//}
+
+func chooseStepFunction(backwards:Bool) -> (Int) -> Int {
+    let stepForward = {(input:Int) -> Int in return input+1};
+    let stepBackward = {(input:Int) -> Int in return input-1};
+//    return stepForward
+    if backwards{
+        return stepForward
+    } else {
+        return stepBackward
+    }
+}
+
+var step = 0
+step = chooseStepFunction(true)(step)
+step = chooseStepFunction(true)(step)
+step = chooseStepFunction(false)(step)
+step = chooseStepFunction(true)(step)
 
 
