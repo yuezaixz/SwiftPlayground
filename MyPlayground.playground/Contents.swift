@@ -470,3 +470,59 @@ func doSomething(person:[String:String]) ->Bool{
 if #available(iOS 9,OSX 10.10,*){//可以多个,比如 平台1，平台2，*
     
 }
+
+func doSomething(person:String="David",thing:String="sleeping"){
+    print("\(person) is doing \(thing)")
+}
+
+//第二个参数为外部参数，所以必须带参数名
+doSomething("david", thing: " studying")
+
+doSomething()//有默认值，就可以不填参数
+
+//如果不声明是var，那么默认为let，不能修改传参数
+//有时候为了少写点代码，直接用参数作为临时变量使用
+func changeIntParam(var willChangeNumber:Int){
+    willChangeNumber = 11
+}
+
+//输入输出参数
+func realChangeIntParam(inout willChangeNumber:Int){
+    willChangeNumber = 11
+}
+
+var willChangeNumber = 9
+changeIntParam(willChangeNumber)
+print(willChangeNumber)
+realChangeIntParam(&willChangeNumber)
+print(willChangeNumber)//修改为11了
+
+
+//函数的类型
+//changeIntParam (Int)->void
+//doSomething ([String:String]->Bool)
+
+var doSomething2:([String:String])->Bool = doSomething
+
+doSomething2(["name":"David"])
+
+//函数作为参数
+func callFunction(function:([String:String])->Bool){
+    function(["name":"TY"])
+}
+
+callFunction { (person) -> Bool in
+    guard let personName = person["name"] else {
+        return false
+    }
+    print("My name is \(personName),hello world!")
+    return true
+}
+//
+//func chooseStepFunction(backwards:Bool) -> (Int) -> Int {
+//    func stepForward : {(input) -> Int in return ++input}
+//    func stepBackward : {(input) -> Int in return --input}
+//    return backwards?stepForward:stepBackward
+//}
+
+
