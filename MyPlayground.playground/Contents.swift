@@ -385,7 +385,7 @@ if let theStr = conditonStr {
     print("为空")
 }
 
-//swift的switch 支持 数字、字符串、元组，还支持表达式
+//swift的switch 支持 数字、字符串、元组，还支持表达式，也可以是『，』分割的一堆表达式
 var someNumber = 15
 switch someNumber {
 case 0...15:
@@ -395,6 +395,56 @@ case 15...30:
     print("15~30")
 default:
     print("other")
+}
+
+//元组的匹配
+let somePoint  = (1,1)
+//可以用_来代替通配
+switch somePoint {
+case (0,0):
+    print("point is an the origin")
+case (_,0):
+    print("point is on the x-axis")
+case (0,_):
+    print("point is on the y-axis")
+default:
+    print("point is flying")
+}
+
+//元组匹配还可以这样
+let otherPoint  = (0,4)
+//可以用变量来代替通配
+switch otherPoint {
+case (0,0):
+    print("point is an the origin")
+case (let x,0):
+    print("point is on the x-axis with an x value of \(x)")
+case (0,let y):
+    print("point is on the y-axis with an y value of \(y)")
+default:
+    print("point is flying")
+}
+
+//元组匹配又可以这样
+let anotherPoint  = (1,-1)
+//可以用变量来代替通配
+switch anotherPoint {
+case let(x,y) where x == y:
+    print("point is an the line x == y")
+case let(x,y) where x == -y:
+    print("point is an the line x == -y")
+case let(x,y):
+    print("pooint is flying")
+}
+
+for var testIndex in 1...5{
+    switch testIndex {
+    case 1:
+        continue;
+    default:
+        print(1)
+    }
+    print(testIndex)//两个地方打印次数一样，说明continue是直接continue了整个for循环
 }
 
 //日期
@@ -407,3 +457,16 @@ format.dateFormat = "YYYY-MM-dd"
 format.stringFromDate(today)
 format.dateFormat = "yyyy-MM-dd"
 format.stringFromDate(today)
+
+//guard 提前退出，比if更有可读性,gurad的条件成立就继续往下执行，否则执行else后的代码块
+func doSomething(person:[String:String]) ->Bool{
+    guard let personName = person["name"] else {
+        return false;
+    }
+    print("\(personName) begin to do something!")
+    return true;
+}
+
+if #available(iOS 9,OSX 10.10,*){//可以多个,比如 平台1，平台2，*
+    
+}
