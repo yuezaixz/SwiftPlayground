@@ -538,4 +538,15 @@ step = chooseStepFunction(true)(step)
 step = chooseStepFunction(false)(step)
 step = chooseStepFunction(true)(step)
 
+func someFunctionThatTakesClosure(closure:()->Void){
+    closure()
+}
 
+someFunctionThatTakesClosure({
+    print(1)
+})
+
+//尾随闭包
+someFunctionThatTakesClosure(){
+    print(2)
+}
