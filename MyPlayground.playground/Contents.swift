@@ -230,6 +230,8 @@ var sumForaArray = aArray.reduce(0, combine: {$0+$1})
 print("[1,2,3,4]'s odd is ",oddArray)
 print("[1,2,3,4]*10=",tenMultipleArray)
 print("1+2+3+4=",sumForaArray)
+var aaArray = aArray.sort({$0>$1})
+print(aaArray)
 
 //Set
 var letters = Set<String>()
