@@ -550,3 +550,20 @@ someFunctionThatTakesClosure({
 someFunctionThatTakesClosure(){
     print(2)
 }
+
+//200多行的那个例子也可以这么写，尾随闭包可以这样缩写
+aaArray = aArray.sort{$0>$1}
+print(aaArray)
+
+//当闭包需要多行的时候，就不能用表达式了，就需要用到这种形式
+var abArray = aArray.map{//map方法也能把原来是Int的数组转化成String的数组
+    (var number) -> String in
+    var result:String;
+    
+    result = String(number * 10);
+    
+    return result;
+}
+
+print(abArray)
+
