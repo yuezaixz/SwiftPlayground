@@ -691,3 +691,8 @@ let testThrowStr:String?
 testThrowStr = "testtest"
 print("\(try! notNull(testThrowStr))")
 
+
+//也可以用try?，返回值如果有会包在optional里，如果为空则返回nil
+let testMaybeThrowStr:String? = nil
+print("\(try? notNull(testThrowStr))")
+print("\(try? notNull(testMaybeThrowStr))")
