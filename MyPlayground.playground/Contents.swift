@@ -663,3 +663,31 @@ func evaluate(expression: ArithmeticExpression) -> Int {
 print(evaluate(ArithmeticExpression.Number(3)))
 print(evaluate(ArithmeticExpression.Addition(.Number(6), .Number(8))))
 print(evaluate(ArithmeticExpression.Multiplication(.Number(12), .Number(2))))
+
+//用枚举定义错误类型,ErrorType是protocol
+enum ParseError: ErrorType {
+    case MissingAttribute(message: String)
+}
+
+func notNull(str: String?) throws//throws写在返回类型前面
+    -> String {
+        guard let notNullStr = str else {
+            let message = "Expected notNull String"
+            throw ParseError.MissingAttribute(message: message)
+        }
+        return notNullStr;
+}
+
+do {//swift 是 do catch
+    let testStr:String? = nil
+    let notNullStr = try notNull(testStr) //注意，可能异常地方要try.
+} catch ParseError.MissingAttribute(let message) {
+    print("\(message)")
+}
+
+
+//如果保证不出错误，可以用 try!,就可以不用catch
+let testThrowStr:String?
+testThrowStr = "testtest"
+print("\(try! notNull(testThrowStr))")
+
