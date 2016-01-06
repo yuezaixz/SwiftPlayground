@@ -664,7 +664,7 @@ print(evaluate(ArithmeticExpression.Number(3)))
 print(evaluate(ArithmeticExpression.Addition(.Number(6), .Number(8))))
 print(evaluate(ArithmeticExpression.Multiplication(.Number(12), .Number(2))))
 
-//用枚举定义错误类型,ErrorType是protocol
+//用枚举定义错误类型,ErrorType是protocol，遵循 ErrorType 协议就可以定制自己的 error type
 enum ParseError: ErrorType {
     case MissingAttribute(message: String)
 }
