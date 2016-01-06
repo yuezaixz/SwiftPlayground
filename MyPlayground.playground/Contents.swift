@@ -608,6 +608,13 @@ enum Barcode {
 
 var mySolkeyInsoleUPCA = Barcode.UPCA(8, 83920, 53216, 3)
 var mySolketOnsoleQRCode = Barcode.QRCode("FKDAF-FDAFF-3FDGS-FVWED-FEWVD")
+
+//枚举是值类型
+var mySolkeyInsoleUPCA2 = mySolkeyInsoleUPCA
+mySolkeyInsoleUPCA = Barcode.UPCA(9, 83920, 53216, 3)
+//值类型赋值就是值拷贝
+print("第一个二维码为\(mySolkeyInsoleUPCA),第二个二维码为\(mySolkeyInsoleUPCA2)")
+
 //switch就要这么写了
 func printSolkeyInfo(productCode:Barcode){
     switch productCode {
@@ -641,7 +648,7 @@ print(planet!)//因为编译器认为可能不存在，所以是optional类型
 //String类型的枚举的原始值默认为他本是
 print("\(ProgramLanguage.Java.rawValue)")
 
-//枚举的地柜
+//枚举的递归
 enum ArithmeticExpression {
     case Number(Int)
     indirect case Addition(ArithmeticExpression, ArithmeticExpression)
