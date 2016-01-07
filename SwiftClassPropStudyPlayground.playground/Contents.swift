@@ -106,4 +106,31 @@ var testVal = 0{
 
 testVal = 40
 
+//类属性
+class SomeClass {
+    //存储类属性,可set
+    static var storedTypeProperty = "Some value."
+    //计算类属性
+    static var computedTypeProperty :Int {
+        return 27;
+    }
+    //可重写的计算类属性 ，记得要用 class 来修饰
+    class var overrideableComputedTypeProperty :Int {
+        return 127;
+    }
 
+}
+
+print(SomeClass.overrideableComputedTypeProperty)
+
+class SomeChildClass: SomeClass {
+    //这个属性就不能override了
+//    override static var computedTypeProperty :Int {
+//        return 27;
+//    }
+    
+    override static var overrideableComputedTypeProperty :Int {
+        return 227;
+    }
+}
+print(SomeChildClass.overrideableComputedTypeProperty)
