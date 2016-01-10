@@ -1,3 +1,9 @@
+
+/**
+ *类型方法和下标脚本
+ *
+ ***/
+
 class SomeClass {
     static func someTypeMethod(){
         print("class some type method call")
