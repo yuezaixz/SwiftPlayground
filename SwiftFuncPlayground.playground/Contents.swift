@@ -100,3 +100,12 @@ func sumNumbers(numbers:Int...) -> Int {
 
 let sum = sumNumbers(1,2,3,4,5,6,7,8,9,10)
 print(sum)
+
+//用_作为前缀，就可以声明不需要外部名称
+func testFuncParam(param1:Int,_ param2:Int){
+    print(param1,param2)
+}
+testFuncParam(1, 2)
+
+
+
