@@ -115,5 +115,5 @@ if testIndexStr.hasSuffix("str"){
 }
 
 //可以直接用contrains来判断字符串是否包含某字符串
-print(testIndexStr.containsString("test"))
+//print(testIndexStr.containsString("test"))
 

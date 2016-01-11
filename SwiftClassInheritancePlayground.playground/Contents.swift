@@ -238,3 +238,85 @@ person = nil//这里被销毁了
 apartment.printDescription()//weak 弱引用在这里就变成nil了
 //apartment的引用计数变为1
 
+
+/**
+  * 无主引用
+  * 其实就类似objc在ARC之前的一个修饰符，具体忘了叫什么了
+  * weak在引用被销毁的时候会自动设置成nil，而无主引用不会，如果你在对象被销毁
+  * 后尝试访问他，那会触发运行时异常
+***/
+class Apartment2: Apartment {
+    //unowned 是否可选类型
+    unowned var owner2:Person
+    init(no:Int,owner:Person){
+        self.owner2  = owner
+        super.init(no: no)
+    }
+}
+
+var person2:Person = Person(name: "Xxx2")
+var apartment2 = Apartment2(no: 3,owner: person2)
+var apartmentAddress = "Rm1134,No.2,Xxx Street,Xiamen city"
+person2 = Person(name: "Xxx2")
+//会报错，因为已经被销毁了
+//print(apartment2.owner2)
+
+//隐式解析+无主引用来实现 两个对象的引用都不能为空的情况
+//例如国家和城市，城市必须有一个国家属性，国家又必须又一个首都的城市属性
+
+class Country {
+    var name:String
+    var capitalCity:City!
+    init(name:String,captialName:String){
+        self.name = name
+        self.capitalCity = City(name: captialName, country: self)
+    }
+    func printDescription(){
+        print("This is \(name), our captital is \(capitalCity.name) ")
+    }
+}
+
+class City {
+    var name:String
+    unowned var country:Country
+    init(name:String,country:Country){
+        self.name = name
+        self.country = country
+    }
+}
+
+var country = Country(name: "China", captialName: "Beijing")
+country.printDescription()
+
+class Computer {
+    var price : Double = 0.0
+    lazy var isExpensive: Void -> Bool = {
+        //设立self被闭包捕获了，调用该方法后，该实例的引用计算+1
+        //由于闭包也被该实例强引用，所以就造成了循环引用
+        return self.price > 100.0
+    }
+    deinit{
+        print("Computer had destory")
+    }
+}
+var computer:Computer? = Computer()
+computer?.isExpensive()
+computer = nil //设置成nil了，依然没有销毁
+
+class Computer2 {
+    var price : Double = 0.0
+    lazy var isExpensive: Void -> Bool = {
+        [unowned self] in//设置成无主
+        return self.price > 100.0
+        //或者这样，设置成弱引用。
+        //但是当前场景就是闭包一定会有self，而self被回收的话，闭包也就不会被调用了,所以这样比较合适
+//        [weak self] in//设置成无主
+//        return self!.price > 100.0
+    }
+    deinit{
+        print("Computer2 had destory")
+    }
+}
+var computer2:Computer2? = Computer2()
+computer2?.isExpensive()
+computer2 = nil //设置成nil了，依然没有销毁
