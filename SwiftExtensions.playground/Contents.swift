@@ -1,7 +1,9 @@
+import Foundation
+
 //Niuniu是一种可耻的赌博游戏
 struct NiuniuCard {
     enum Suit:Character {
-        case Spades = "♠️",hearts="❤️",Dismonds="♦️",Clubs="♣️"
+        case Spades = "♠️",Hearts="❤️",Dismonds="♦️",Clubs="♣️"
     }
     enum Rank:Int {
         case Two = 2,Three,Four,Five,Six,Seven,Eight,Nine,Ten
@@ -152,3 +154,145 @@ extension NiuniuSerial {//扩展Serial类
         }
     }
 }
+
+extension NiuniuCard.Rank {
+    static func fromRaw(rawValue:Int) -> NiuniuCard.Rank {
+        switch rawValue {
+        case 2:
+            return NiuniuCard.Rank.Two
+        case 3:
+            return NiuniuCard.Rank.Three
+        case 4:
+            return NiuniuCard.Rank.Four
+        case 5:
+            return NiuniuCard.Rank.Five
+        case 6:
+            return NiuniuCard.Rank.Six
+        case 7:
+            return NiuniuCard.Rank.Seven
+        case 8:
+            return NiuniuCard.Rank.Eight
+        case 9:
+            return NiuniuCard.Rank.Nine
+        case 10:
+            return NiuniuCard.Rank.Ten
+        case 11:
+            return NiuniuCard.Rank.Jack
+        case 12:
+            return NiuniuCard.Rank.King
+        case 13:
+            return NiuniuCard.Rank.Queen
+        default:
+            return NiuniuCard.Rank.Ace
+        }
+    }
+}
+
+class NiuniuPlayer{
+    enum PlayerType:Int {
+        case robot = 0,player
+    }
+    var name:String
+    var score:Int
+    var type:PlayerType
+    var cards = [NiuniuCard]()
+    init(name:String,score:Int,type:PlayerType){
+        self.name = name
+        self.score = score
+        self.type = type
+    }
+    
+    func description() -> String{
+        return "\(name):\(score)"
+    }
+}
+
+class NiuniuGame {
+    enum GameType:Int {
+        case robot = 0,match
+    }
+    
+    var banker:NiuniuPlayer
+    
+    var players = [NiuniuPlayer]()
+    var robots = [NiuniuPlayer]()
+    var gameType = GameType.robot
+    var cards = [NiuniuCard]()
+    
+    init(banker:NiuniuPlayer){
+        self.banker = banker
+        let suits: [NiuniuCard.Suit] = [.Hearts, .Dismonds, .Clubs, .Spades]
+        for i in 1...13 {
+            for suit in suits {
+                cards.append(NiuniuCard(rank: NiuniuCard.Rank.fromRaw(i), suit: suit))
+            }
+        }
+    }
+    
+}
+
+extension NiuniuGame {//增加开始后初始化机器人的功能和添加机器人等功能
+    func addRobot(){
+        self.robots.append(NiuniuPlayer(name: "Rebot\(self.robots.count+1)", score: 0, type: .robot))
+    }
+    func addRobot(robotCount:Int){
+        for _ in 0..<robotCount {
+            self.addRobot()
+        }
+    }
+    convenience init(banker:NiuniuPlayer,robotCount:Int){
+        self.init(banker:banker)
+        self.addRobot(robotCount)
+    }
+}
+
+extension NiuniuGame {//增加玩家的相关函数
+    func addPlayer(player:NiuniuPlayer){
+        switch player.type {
+        case .player:
+            self.addPlayer(player)
+        case .robot:
+            self.robots.append(player)
+        }
+    }
+    func addPlayer(players:NiuniuPlayer...){
+        for player in players {
+            self.addPlayer(player)
+        }
+    }
+}
+
+extension NiuniuPlayer {
+    func clearLastCards() {
+        self.cards.removeAll()
+    }
+    func cardCount() -> Int {
+        return self.cards.count
+    }
+}
+
+extension NiuniuGame {
+    func cardForRandom() -> NiuniuCard {
+        return self.cards[Int(arc4random()) % self.cards.count]
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
