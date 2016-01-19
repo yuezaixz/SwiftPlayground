@@ -107,5 +107,12 @@ func testFuncParam(param1:Int,_ param2:Int){
 }
 testFuncParam(1, 2)
 
+//autoclosure 定义简易的自动闭包
+func logIfTrue(@autoclosure predicate:() -> Bool){
+    if predicate() {
+        print("Log")
+    }
+}
 
+logIfTrue(3>2)
 
