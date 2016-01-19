@@ -81,9 +81,42 @@ print(testClassArray[0].name)
 print(testClassArray2[0].name)
 
 
+struct Vector2D {
+    var x = 0.0
+    var y = 0.0
+}
+
+let v1 = Vector2D(x: 1, y: 2)
+let v2 = Vector2D(x: 4, y: 6)
+
+//注意，操作符的定义只能在全局范围，不能在局部。而且一个不被公认的操作符使用起来是很危险的，要小心
+
+//可以重载操作符来完成各种操作符操作
+func +(left:Vector2D,right:Vector2D) -> Vector2D {
+    return Vector2D(x:left.x+right.x,y:left.y+right.y)
+}
+
+print(v1+v2)
+
+//重载负号操作符，因为他是前位操作符，所以要prefix，默认是中位
+prefix func -(right:Vector2D) -> Vector2D {
+    return Vector2D(x:-right.x,y:-right.y)
+}
+
+print(-v1)
+
+//还可以增加新的操作符
+infix operator +* {//infix 表示这是一个中位操作符，前后都是输入，其他还有prefix(前，操作符在前)和postfix(后)
+    associativity none //left为多个计算时候从左到右，right反过来，none表示不会出现多个情况
+    precedence 160//算数优先级，乘除法是150，加减是140
+}
+
+func +* (left:Vector2D,right:Vector2D) -> Double {
+    return left.x*right.x+left.y*right.y
+}
 
 
-
+print(v1+*v2*2+4) //即为(1*4+2*6)*2+4 = 36.0
 
 
 
