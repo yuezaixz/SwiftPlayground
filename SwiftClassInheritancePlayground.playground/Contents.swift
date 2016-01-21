@@ -89,6 +89,30 @@ print(riddingBicycle.hasBasket)//依然还是false，没有被改变值
 print(riddingBicycle.description)
 
 
+class Cat {
+    let name:String
+    init() {
+        print("init cat")
+        name = "cat"
+    }
+}
+
+class Tiger: Cat {
+    let power:Int
+    override init() {
+        power = 10
+        print("init tiger")
+        //虽然没调用，但是默认在初始化完自身属性后调用 super.init()
+        
+        //但是，如果需要在super.init()修改父类的某属性,就必须先super.init()，在修改了
+    }
+}
+
+Tiger()
+//输出
+//init tiger
+//init cat
+
 /**
   *便利构造器
 ***/
