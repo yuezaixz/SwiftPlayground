@@ -131,11 +131,57 @@ func cancel(task:Task?){
     task?(cancel: true)
 }
 
+//测试接口返回当前类型的Self
+protocol Copyable {
+    func copy() -> Self;
+}
+
+class Person:Copyable {
+    var name:String = "no name"
+    
+    required init(){//因为Copy用dynamicType调用了init方法，所以必须保证当前类和其子类都能响应这个 init 方法
+        
+    }
+    
+    func copy() -> Self {
+        let result = self.dynamicType.init()//这里必须返回抽象的类型，因为其子类也可能调用该方法
+        result.name = name
+        return result
+    }
+    
+}
+
+//另一种做法
+
+protocol Copyable2 {
+    typealias MySelf
+    func copy() -> MySelf;
+}
+
+class Person2:Copyable2 {
+    typealias MySelf = Person2
+    
+    var name:String = "no name"
+    func copy() -> MySelf {
+        let result = Person2()//这里必须返回抽象的类型，因为其子类也可能调用该方法
+        print(self.dynamicType)//这里其实打印的动态类型已经是SuperMan了
+        result.name = self.name
+        return result
+    }
+    
+}
+
+class Superman:Person2 {
+    
+}
+
+var aMan = Superman()
+aMan.name = "David"
+var bMan = aMan.copy()
+print(bMan.name)
 
 
-
-
-
+//个人认为，第一种方法更好，他可以先调用父类的super.copy完成父类属性的copy，然后在完成自身属性的copy工作
 
 
 
