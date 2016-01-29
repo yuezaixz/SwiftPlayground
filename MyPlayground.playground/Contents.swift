@@ -184,11 +184,9 @@ print(bMan.name)
 //个人认为，第一种方法更好，他可以先调用父类的super.copy完成父类属性的copy，然后在完成自身属性的copy工作
 
 
-
-
-
-
-
-
-
-
+//显示10的23次方，用自然的方式
+let font:UIFont? = UIFont(name: "Helvetica", size:20)
+let fontSuper:UIFont? = UIFont(name: "Helvetica", size:10)
+let attString:NSMutableAttributedString = NSMutableAttributedString(string: "6.022*1023", attributes: [NSFontAttributeName:font!])
+attString.setAttributes([NSFontAttributeName:fontSuper!,NSBaselineOffsetAttributeName:10], range: NSRange(location:8,length:2))
+attString
