@@ -3,15 +3,15 @@
 import UIKit
 
 //日期
-var today :NSDate = NSDate()
-var format:NSDateFormatter = NSDateFormatter()
+var today :Date = Date()
+var format:DateFormatter = DateFormatter()
 //大写的YYYY应该是以本周的周六在哪年来计算的
 //比如，2015年12月29日是周二，本周的周六在2016年，所以"YYYY-MM-dd"->"2016-12-29"
 //总之，切记用小写的yyyy
 format.dateFormat = "YYYY-MM-dd"
-format.stringFromDate(today)
+format.string(from: today)
 format.dateFormat = "yyyy-MM-dd"
-format.stringFromDate(today)
+format.string(from: today)
 
 //测试同名、同参数列表不同返回值的函数重载
 
@@ -43,13 +43,13 @@ let testInstance = TestClass()
 //对于objc的对象，这两个这里输出是一样的
 print(object_getClass(today))
 
-print(today.dynamicType)
+print(type(of: today))
 
 //但是对于swift原生的对象，就出现了区别
 var str = ""
 print(object_getClass(str))
 
-print(str.dynamicType)
+print(type(of: str))
 
 //以下为输出
 //__NSDate
@@ -59,7 +59,7 @@ print(str.dynamicType)
 
 //测试KVO，只有NSObject的子类才行，因为其实他就是objc的runtime特性。
 class MyClass:NSObject {
-    dynamic var date = NSDate()//需要KVO的属性要设置dynamic
+    dynamic var date = Date()//需要KVO的属性要设置dynamic
 }
 
 private var myContext = 0
@@ -71,16 +71,16 @@ class Class:NSObject {
         super.init()
         myObject = MyClass()
         print("初始化了Myclass对象，当前时间为\(myObject.date)")
-        myObject.addObserver(self, forKeyPath: "date", options: .New, context: &myContext)
-        delay(3){
-            self.myObject.date = NSDate()
+        myObject.addObserver(self, forKeyPath: "date", options: .new, context: &myContext)
+        delay(time: 3){
+            self.myObject.date = Date()
         }
         
     }
     
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if let change = change {
-            let a = change[NSKeyValueChangeNewKey]
+            let a = change[NSKeyValueChangeKey.newKey]
             print("日期修改为\(a)")
         }
     }
@@ -91,25 +91,26 @@ class Class:NSObject {
 
 //GCD 来实现delay实行block
 
-typealias Task = (cancel:Bool) -> Void
+typealias Task = (_ cancel:Bool) -> Void
 
-func delay(time:NSTimeInterval , task:()->()) -> Task? {
-    func dispatch_later(block:()->()){
-        dispatch_after(
-            dispatch_time(DISPATCH_TIME_NOW, Int64(time * Double(NSEC_PER_SEC))),
-            dispatch_get_main_queue(),
-            block
-        )
+func delay(time:TimeInterval , task:@escaping ()->()) -> Task? {
+    func dispatch_later(block:@escaping ()->()){
+        let when = DispatchTime.now() + time // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            block()
+        }
     }
     
-    var closure:dispatch_block_t? = task
+    var closure:(()->())? = task
     var result :Task?
     
     let delayedClosure : Task = {
         cancel in
         if let internalClosure = closure {
             if (cancel == false) {
-                dispatch_async(dispatch_get_main_queue(), internalClosure)
+                DispatchQueue.main.async {
+                    internalClosure()
+                }
             }
         }
         closure = nil
@@ -120,7 +121,7 @@ func delay(time:NSTimeInterval , task:()->()) -> Task? {
     
     dispatch_later{
         if let delayedClosure = result {
-            delayedClosure(cancel: false)
+            delayedClosure(false)
         }
     }
     
@@ -128,7 +129,7 @@ func delay(time:NSTimeInterval , task:()->()) -> Task? {
 }
 
 func cancel(task:Task?){
-    task?(cancel: true)
+    task?(true)
 }
 
 //测试接口返回当前类型的Self
@@ -144,7 +145,7 @@ class Person:Copyable {
     }
     
     func copy() -> Self {
-        let result = self.dynamicType.init()//这里必须返回抽象的类型，因为其子类也可能调用该方法
+        let result = type(of: self).init()//这里必须返回抽象的类型，因为其子类也可能调用该方法
         result.name = name
         return result
     }
@@ -154,7 +155,7 @@ class Person:Copyable {
 //另一种做法
 
 protocol Copyable2 {
-    typealias MySelf
+    associatedtype MySelf
     func copy() -> MySelf;
 }
 
@@ -164,7 +165,7 @@ class Person2:Copyable2 {
     var name:String = "no name"
     func copy() -> MySelf {
         let result = Person2()//这里必须返回抽象的类型，因为其子类也可能调用该方法
-        print(self.dynamicType)//这里其实打印的动态类型已经是SuperMan了
+        print(type(of: self))//这里其实打印的动态类型已经是SuperMan了
         result.name = self.name
         return result
     }
